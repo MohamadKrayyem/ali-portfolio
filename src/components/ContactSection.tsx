@@ -7,19 +7,19 @@ const contactInfo = [
   {
     icon: Mail,
     label: "Email",
-    value: "hello@alikrayem.com",
-    href: "mailto:hello@alikrayem.com",
+    value: "alikr.info@gmail.com",
+    href: "alikr.info@gmail.com",
   },
   {
     icon: Phone,
     label: "Phone",
-    value: "+1 (555) 123-4567",
+    value: "81 714 655",
     href: "tel:+15551234567",
   },
   {
     icon: MapPin,
     label: "Location",
-    value: "Los Angeles, CA",
+    value: "Beirut Lebanon",
     href: "#",
   },
 ];

@@ -1,17 +1,15 @@
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useRef, useState, memo, useCallback, useMemo } from "react";
 import { Play, ExternalLink, X } from "lucide-react";
-import LuxuryButton from "./LuxuryButton";
 
 // Import images for ES6 module bundling
 import cinematicDrone from "@/assets/portfolio/1000088153.png";
-import cinematicCity from "@/assets/portfolio/1000088155.png";
-import studioPortrait from "@/assets/portfolio/1000088157.png";
-import cosmeticAd from "@/assets/portfolio/1000088161.png";
+import studioPortrait from "@/assets/portfolio/1000088155.png";
+import cosmeticAd from "@/assets/portfolio/1000088157.png";
+import cinematicCity from "@/assets/portfolio/1000088161.png";
 import jewelryAd from "@/assets/portfolio/1000088163.png";
-import emotionalCinematic from "@/assets/portfolio/1000088165.png";
-import realEstateDrone from "@/assets/portfolio/1000088167.png";
-import creativeStylized from "@/assets/portfolio/1000088153.png";
+import realEstateDrone from "@/assets/portfolio/1000088165.png";
+import emotionalCinematic from "@/assets/portfolio/1000088167.png";
 
 const portfolioItems = [
   {
@@ -23,24 +21,24 @@ const portfolioItems = [
   },
   {
     id: 2,
-    title: "Cinematic Drone Shot",
-    category: "Cinematic",
-    image: cinematicCity,
-    description: "Landscape / City / Nature — Feels like a movie opening.",
-  },
-  {
-    id: 3,
     title: "Studio Portrait",
     category: "Photography",
     image: studioPortrait,
     description: "Clean studio lighting — Editorial — High-end look.",
   },
   {
-    id: 4,
+    id: 3,
     title: "Product Ad — Cosmetic",
     category: "Commercial",
     image: cosmeticAd,
     description: "Perfume / Skincare — Stone / Water / Leaves / Natural light.",
+  },
+  {
+    id: 4,
+    title: "Cinematic City Shot",
+    category: "Cinematic",
+    image: cinematicCity,
+    description: "Landscape / City / Nature — Feels like a movie opening.",
   },
   {
     id: 5,
@@ -51,28 +49,21 @@ const portfolioItems = [
   },
   {
     id: 6,
-    title: "Deep Emotional Cinematic",
-    category: "Cinematic",
-    image: emotionalCinematic,
-    description: "Human-focused — Strong feeling — Story in one frame.",
-  },
-  {
-    id: 7,
     title: "Real Estate Drone Shot",
     category: "Commercial",
     image: realEstateDrone,
     description: "Towers / Architecture — Clean, premium look.",
   },
   {
-    id: 8,
-    title: "Animated Character",
-    category: "Creative",
-    image: creativeStylized,
-    description: "Stylized but cinematic — Clean — Professional.",
+    id: 7,
+    title: "Deep Emotional Cinematic",
+    category: "Cinematic",
+    image: emotionalCinematic,
+    description: "Human-focused — Strong feeling — Story in one frame.",
   },
 ];
 
-const categories = ["All", "Cinematic", "Commercial", "Photography", "Creative"];
+const categories = ["All", "Cinematic", "Commercial", "Photography"];
 
 interface PortfolioItem {
   id: number;
@@ -318,18 +309,6 @@ const PortfolioSection = memo(() => {
               />
             ))}
           </AnimatePresence>
-        </motion.div>
-
-        {/* View All Button */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={isInView ? { opacity: 1 } : {}}
-          transition={{ duration: 0.6, delay: 0.6 }}
-          className="text-center mt-16"
-        >
-          <LuxuryButton href="#" variant="ghost" icon={<ExternalLink size={16} />}>
-            View All Projects
-          </LuxuryButton>
         </motion.div>
       </div>
 
