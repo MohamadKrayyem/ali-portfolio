@@ -10,7 +10,7 @@ const navItems = [
 ];
 
 const Navigation = memo(() => {
-  const [activeSection, setActiveSection] = useState("");
+  const [activeSection, setActiveSection] = useState("#");
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -19,12 +19,18 @@ const Navigation = memo(() => {
 
       // Detect active section
       const sections = ["about", "services", "portfolio", "contact"];
-      for (const section of sections.reverse()) {
+      let found = false;
+      for (const section of [...sections].reverse()) {
         const el = document.getElementById(section);
         if (el && window.scrollY >= el.offsetTop - 200) {
           setActiveSection(`#${section}`);
+          found = true;
           break;
         }
+      }
+      // If no section matched, we're at the top = HOME
+      if (!found) {
+        setActiveSection("#");
       }
     };
 

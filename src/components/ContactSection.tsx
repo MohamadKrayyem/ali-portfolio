@@ -8,13 +8,13 @@ const contactInfo = [
     icon: Mail,
     label: "Email",
     value: "alikr.info@gmail.com",
-    href: "alikr.info@gmail.com",
+    href: "https://mail.google.com/mail/?view=cm&to=alikr.info@gmail.com",
   },
   {
     icon: Phone,
     label: "Phone",
     value: "81 714 655",
-    href: "tel:+15551234567",
+    href: "tel:+96181714655",
   },
   {
     icon: MapPin,

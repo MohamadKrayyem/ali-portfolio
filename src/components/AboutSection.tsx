@@ -1,6 +1,6 @@
 import { motion, useInView } from "framer-motion";
 import { useRef, memo, useState, useEffect } from "react";
-import heroPortrait from "@/assets/hf_20260204_053313_88d3fa0d-687b-4133-8ca6-706e771c9b77.png";
+import heroPortrait from "@/assets/portfolio/hero-bg.webp";
 
 const stats = [
   { value: 8, suffix: "+", label: "Years Experience" },
