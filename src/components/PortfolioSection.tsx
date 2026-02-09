@@ -247,10 +247,13 @@ const PortfolioSection = memo(() => {
           <span className="text-primary text-sm tracking-[0.3em] uppercase mb-4 block font-cinzel">
             My Work
           </span>
-          <h2 className="text-4xl md:text-5xl font-light font-playfair">
+          <h2 className="text-4xl md:text-5xl font-light font-playfair mb-6">
             FEATURED{" "}
             <span className="font-bold text-gradient-gold">PORTFOLIO</span>
           </h2>
+          <p className="text-muted-foreground text-lg max-w-2xl mx-auto font-montserrat">
+            A curated selection of AI-generated cinematic and commercial visuals created for digital media and advertising.
+          </p>
         </motion.div>
 
         {/* Category Filter - Luxury Editorial Style */}

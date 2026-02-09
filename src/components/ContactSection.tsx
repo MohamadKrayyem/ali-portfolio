@@ -8,7 +8,7 @@ const contactInfo = [
     icon: Mail,
     label: "Email",
     value: "alikr.info@gmail.com",
-    href: "https://mail.google.com/mail/?view=cm&to=alikr.info@gmail.com",
+    href: "mailto:alikr.info@gmail.com",
   },
   {
     icon: Phone,

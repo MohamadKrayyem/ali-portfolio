@@ -8,25 +8,25 @@ const services = [
     icon: Video,
     title: "Cinematic Video Production",
     description:
-      "Ultra-realistic visuals, impossible shots, and short films powered by AI.",
+      "AI-generated cinematic scenes and short films.",
   },
   {
     icon: TrendingUp,
     title: "Commercial & Advertising Visuals",
     description:
-      "Luxury brand visuals, cars, real estate, and product advertising.",
+      "AI concept ads and commercial visuals for brands.",
   },
   {
     icon: Share2,
     title: "Photography & Studio Imagery",
     description:
-      "Studio-quality photography without physical shoots.",
+      "AI-generated studio-quality imagery (no physical shoots).",
   },
   {
     icon: Lightbulb,
     title: "Social Media Visual Content",
     description:
-      "Fast-production, scalable, multi-variation content optimized for platforms.",
+      "AI visuals optimized for digital platforms.",
   },
 ];
 

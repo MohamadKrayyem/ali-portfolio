@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { memo } from "react";
-import { Instagram, Twitter, Linkedin } from "lucide-react";
+import { Instagram, Linkedin } from "lucide-react";
 
 // TikTok icon (not available in lucide-react)
 const TikTokIcon = ({ size = 18 }: { size?: number }) => (
@@ -16,9 +16,8 @@ const TikTokIcon = ({ size = 18 }: { size?: number }) => (
 );
 
 const socialLinks = [
-  { icon: Instagram, href: "#", label: "Instagram" },
-  { icon: TikTokIcon, href: "#", label: "TikTok" },
-  { icon: Twitter, href: "#", label: "Twitter" },
+  { icon: Instagram, href: "https://www.instagram.com/aibyalii?igsh=N28ya3NueGJ1aHZl", label: "Instagram" },
+  { icon: TikTokIcon, href: "https://www.tiktok.com/@mirakyl404?_r=1&_t=ZS-93mEwvOBoqe", label: "TikTok" },
   { icon: Linkedin, href: "#", label: "LinkedIn" },
 ];
 
@@ -52,6 +51,8 @@ const Footer = memo(() => {
               <motion.a
                 key={index}
                 href={social.href}
+                target="_blank"
+                rel="noopener noreferrer"
                 aria-label={social.label}
                 whileHover={{ scale: 1.15, rotate: 5 }}
                 whileTap={{ scale: 0.95 }}

@@ -84,7 +84,7 @@ const AboutSection = memo(() => {
               transition={{ duration: 0.8, delay: 0.2 }}
             >
               <p>
-                I'm an AI content creator working on high-level visual production.
+                I'm an AI visual creator and digital media professional specializing in AI-generated cinematic and commercial content.
               </p>
               <p>
                 I collaborate with individuals, creatives, and brands to transform ideas into striking visual content, adapting each project to its concept while keeping the vision clear and visually consistent.

@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { memo } from "react";
-import { Instagram, Twitter, Linkedin } from "lucide-react";
+import { Instagram, Linkedin } from "lucide-react";
 import LuxuryButton from "./LuxuryButton";
 import TypeWriter from "./TypeWriter";
 import heroPortrait from "@/assets/portfolio/hero-bg.webp";
@@ -19,9 +19,8 @@ const TikTokIcon = ({ size = 18 }: { size?: number }) => (
 );
 
 const socialLinks = [
-  { icon: Instagram, href: "#", label: "Instagram" },
-  { icon: TikTokIcon, href: "#", label: "TikTok" },
-  { icon: Twitter, href: "#", label: "Twitter" },
+  { icon: Instagram, href: "https://www.instagram.com/aibyalii?igsh=N28ya3NueGJ1aHZl", label: "Instagram" },
+  { icon: TikTokIcon, href: "https://www.tiktok.com/@mirakyl404?_r=1&_t=ZS-93mEwvOBoqe", label: "TikTok" },
   { icon: Linkedin, href: "#", label: "LinkedIn" },
 ];
 
@@ -84,7 +83,7 @@ const HeroSection = memo(() => {
             className="text-primary text-lg max-w-xl mb-10 leading-relaxed tracking-[0.2em]"
           >
             <TypeWriter
-              text="AI CONTENT CREATOR"
+              text="AI VISUAL CREATOR & DIGITAL MEDIA PROFESSIONAL"
               delay={1500}
               speed={80}
             />
@@ -116,6 +115,8 @@ const HeroSection = memo(() => {
               <motion.a
                 key={index}
                 href={social.href}
+                target="_blank"
+                rel="noopener noreferrer"
                 aria-label={social.label}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
