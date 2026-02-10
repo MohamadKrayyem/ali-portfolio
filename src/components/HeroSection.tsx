@@ -1,7 +1,6 @@
 import { motion } from "framer-motion";
 import { memo } from "react";
 import { Instagram, Linkedin } from "lucide-react";
-import LuxuryButton from "./LuxuryButton";
 import TypeWriter from "./TypeWriter";
 import heroPortrait from "@/assets/portfolio/hero-bg.webp";
 
@@ -57,51 +56,105 @@ const HeroSection = memo(() => {
 
       <div className="container mx-auto px-8 relative z-[10]">
         <div className="flex flex-col items-center lg:items-start justify-center min-h-screen pt-24 text-center lg:text-left">
-          {/* Content */}
+          
+          {/* Name — ALI */}
           <motion.h1
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.5 }}
-            className="text-5xl md:text-7xl lg:text-8xl font-light mb-2 tracking-tight font-playfair"
+            className="text-6xl md:text-7xl lg:text-8xl font-light mb-1 font-playfair"
+            style={{ letterSpacing: "-0.01em", lineHeight: 0.95 }}
           >
             ALI
           </motion.h1>
 
+          {/* Name — KRAYEM (gold gradient + italic for luxury) */}
           <motion.h1
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
-            className="text-5xl md:text-7xl lg:text-8xl font-bold mb-8 tracking-tight font-playfair text-gradient-gold-white"
+            className="text-6xl md:text-7xl lg:text-8xl font-bold italic mb-6 font-playfair text-gradient-gold-white"
+            style={{ letterSpacing: "-0.01em", lineHeight: 0.95 }}
           >
             KRAYEM
           </motion.h1>
 
+          {/* DIGITAL CREATOR tagline with gold lines on each side */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.65 }}
+            className="flex items-center gap-3 mb-5"
+          >
+            <div className="w-8 md:w-10 h-[0.5px] bg-gradient-to-r from-transparent to-primary/50" />
+            <span className="text-[10px] md:text-[11px] tracking-[0.35em] text-primary/60 uppercase font-cinzel">
+              Digital Creator
+            </span>
+            <div className="w-8 md:w-10 h-[0.5px] bg-gradient-to-l from-transparent to-primary/50" />
+          </motion.div>
+
+          {/* Typed lines — both stay visible */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.7 }}
-            className="text-primary text-lg max-w-xl mb-10 leading-relaxed tracking-[0.2em]"
+            className="text-primary/80 text-sm md:text-base max-w-xl mb-4 leading-relaxed tracking-[0.2em] font-cinzel uppercase"
           >
             <TypeWriter
-              text="AI VISUAL CREATOR & DIGITAL MEDIA PROFESSIONAL"
-              delay={1500}
+              texts={["AI VISUAL CREATOR", "AI CONTENT PRODUCTION"]}
               speed={80}
+              delay={1500}
             />
           </motion.div>
 
-          {/* Buttons */}
+          {/* Trust micro-line */}
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.75 }}
+            className="text-[9px] md:text-[10px] tracking-[0.25em] text-muted-foreground/30 uppercase font-cinzel mb-10"
+          >
+            Cinematic AI&ensp;•&ensp;Commercial Visuals
+          </motion.p>
+
+          {/* Luxury Buttons — stacked on mobile, side by side on desktop */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.8 }}
-            className="flex gap-4 mb-12"
+            className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-12 w-full sm:w-auto items-center lg:items-start"
           >
-            <LuxuryButton href="#services" variant="primary">
-              Services
-            </LuxuryButton>
-            <LuxuryButton href="#portfolio" variant="outline">
-              Portfolio
-            </LuxuryButton>
+            {/* Primary — Gold Filled with shimmer */}
+            <motion.a
+              href="#services"
+              whileTap={{ scale: 0.97 }}
+              className="group relative overflow-hidden w-[220px] sm:w-[185px] h-[48px] flex items-center justify-center cursor-pointer"
+            >
+              <div className="absolute inset-0 bg-primary" />
+              <div className="absolute inset-0 bg-gradient-to-b from-white/10 to-transparent opacity-50" />
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-out" />
+              <div className="absolute inset-[1px] border border-white/10" />
+              <span className="relative z-10 text-[10px] md:text-[11px] tracking-[0.3em] uppercase font-semibold text-background font-cinzel">
+                Services
+              </span>
+            </motion.a>
+
+            {/* Secondary — Outline with corner accents */}
+            <motion.a
+              href="#portfolio"
+              whileTap={{ scale: 0.97 }}
+              className="group relative overflow-hidden w-[220px] sm:w-[185px] h-[48px] flex items-center justify-center cursor-pointer"
+            >
+              <div className="absolute inset-0 border border-primary/30 group-hover:border-primary/60 transition-all duration-500" />
+              <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/5 transition-all duration-500" />
+              <div className="absolute top-0 left-0 w-3 h-[1px] bg-primary group-hover:w-5 transition-all duration-300" />
+              <div className="absolute top-0 left-0 w-[1px] h-3 bg-primary group-hover:h-5 transition-all duration-300" />
+              <div className="absolute bottom-0 right-0 w-3 h-[1px] bg-primary group-hover:w-5 transition-all duration-300" />
+              <div className="absolute bottom-0 right-0 w-[1px] h-3 bg-primary group-hover:h-5 transition-all duration-300" />
+              <span className="relative z-10 text-[10px] md:text-[11px] tracking-[0.3em] uppercase font-medium text-primary/80 group-hover:text-primary transition-colors duration-300 font-cinzel">
+                Portfolio
+              </span>
+            </motion.a>
           </motion.div>
 
           {/* Social Links */}
@@ -109,7 +162,7 @@ const HeroSection = memo(() => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 1 }}
-            className="flex gap-5"
+            className="flex gap-4"
           >
             {socialLinks.map((social, index) => (
               <motion.a
@@ -121,12 +174,12 @@ const HeroSection = memo(() => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 1 + index * 0.1 }}
-                whileHover={{ scale: 1.15, rotate: 5, color: "hsl(43 74% 49%)" }}
+                whileHover={{ scale: 1.1, y: -2 }}
                 whileTap={{ scale: 0.95 }}
-                className="w-10 h-10 rounded-full border border-muted flex items-center justify-center text-muted-foreground hover:border-primary transition-colors duration-300"
+                className="w-10 h-10 rounded-full border border-muted-foreground/15 flex items-center justify-center text-muted-foreground/40 hover:border-primary/50 hover:text-primary transition-all duration-300"
                 style={{ willChange: "transform" }}
               >
-                <social.icon size={18} />
+                <social.icon size={16} />
               </motion.a>
             ))}
           </motion.div>
@@ -141,20 +194,20 @@ const HeroSection = memo(() => {
         className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20"
       >
         <motion.div
-          className="w-6 h-10 rounded-full border border-muted-foreground/30 flex justify-center pt-2 cursor-pointer"
+          className="w-5 h-8 rounded-full border border-muted-foreground/20 flex justify-center pt-1.5 cursor-pointer"
           whileHover={{ borderColor: "hsl(43 74% 49%)" }}
           onClick={() => document.getElementById("about")?.scrollIntoView({ behavior: "smooth" })}
         >
           <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{ duration: 1.5, repeat: Infinity }}
-            className="w-1 h-2 rounded-full bg-primary"
+            animate={{ y: [0, 7, 0] }}
+            transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+            className="w-[2px] h-[7px] rounded-full bg-primary/50"
           />
         </motion.div>
         <motion.p
-          className="text-xs text-muted-foreground/50 mt-2 text-center uppercase tracking-widest"
-          animate={{ opacity: [0.3, 0.7, 0.3] }}
-          transition={{ duration: 2, repeat: Infinity }}
+          className="text-[8px] text-muted-foreground/30 mt-2 text-center uppercase tracking-[0.35em] font-cinzel"
+          animate={{ opacity: [0.2, 0.5, 0.2] }}
+          transition={{ duration: 2.5, repeat: Infinity }}
         >
           Scroll
         </motion.p>
