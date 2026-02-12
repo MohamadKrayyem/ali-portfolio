@@ -1,7 +1,6 @@
 import { motion } from "framer-motion";
 import { memo } from "react";
 import { Instagram, Linkedin } from "lucide-react";
-import TypeWriter from "./TypeWriter";
 import heroPortrait from "@/assets/portfolio/hero-bg.webp";
 
 // TikTok icon (not available in lucide-react)
@@ -18,51 +17,130 @@ const TikTokIcon = ({ size = 18 }: { size?: number }) => (
 );
 
 const socialLinks = [
-  { icon: Instagram, href: "https://www.instagram.com/aibyalii?igsh=N28ya3NueGJ1aHZl", label: "Instagram" },
-  { icon: TikTokIcon, href: "https://www.tiktok.com/@mirakyl404?_r=1&_t=ZS-93mEwvOBoqe", label: "TikTok" },
+  {
+    icon: Instagram,
+    href: "https://www.instagram.com/aibyalii?igsh=N28ya3NueGJ1aHZl",
+    label: "Instagram",
+  },
+  {
+    icon: TikTokIcon,
+    href: "https://www.tiktok.com/@mirakyl404?_r=1&_t=ZS-93mEwvOBoqe",
+    label: "TikTok",
+  },
   { icon: Linkedin, href: "#", label: "LinkedIn" },
 ];
 
 const HeroSection = memo(() => {
   return (
-    <section
-      className="relative min-h-screen flex items-center overflow-hidden bg-gradient-dark"
-    >
+    <section className="relative min-h-screen flex items-center overflow-hidden bg-gradient-dark">
       {/* Hero Background Image */}
       <div
-        className="absolute inset-0 z-0"
+        className="
+          absolute inset-0 z-0 bg-cover bg-no-repeat
+          [background-position:82%_top]
+          sm:[background-position:78%_top]
+          md:[background-position:74%_top]
+          lg:[background-position:70%_top]
+        "
         style={{
           backgroundImage: `url(${heroPortrait})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center top",
         }}
       />
-      
+
       {/* Dark cinematic overlay */}
       <div className="absolute inset-0 z-[1] bg-background/70" />
 
-      {/* Subtle grid pattern overlay */}
+      {/* Text-safe gradient mask */}
       <div
-        className="absolute inset-0 opacity-[0.02] z-[2]"
+        className="
+          absolute inset-0 z-[2] pointer-events-none
+          bg-[linear-gradient(90deg,rgba(0,0,0,0.88)_0%,rgba(0,0,0,0.72)_45%,rgba(0,0,0,0.25)_72%,rgba(0,0,0,0.05)_100%)]
+        "
+      />
+
+      {/* Enhanced grid pattern overlay with subtle animation */}
+      <div
+        className="absolute inset-0 opacity-[0.03] z-[3]"
         style={{
-          backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
-                            linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
-          backgroundSize: "100px 100px",
+          backgroundImage: `linear-gradient(rgba(255,255,255,0.15) 1px, transparent 1px),
+                            linear-gradient(90deg, rgba(255,255,255,0.15) 1px, transparent 1px)`,
+          backgroundSize: "80px 80px",
         }}
       />
 
-      {/* Gradient overlay */}
+      {/* Animated gradient orbs for depth */}
+      <motion.div
+        className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full bg-primary/5 blur-[120px] z-[4]"
+        animate={{
+          scale: [1, 1.2, 1],
+          opacity: [0.3, 0.5, 0.3],
+        }}
+        transition={{
+          duration: 8,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+      />
+      <motion.div
+        className="absolute bottom-1/4 right-1/4 w-96 h-96 rounded-full bg-primary/3 blur-[100px] z-[4]"
+        animate={{
+          scale: [1.2, 1, 1.2],
+          opacity: [0.2, 0.4, 0.2],
+        }}
+        transition={{
+          duration: 10,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+      />
+
+      {/* Subtle gradient overlay */}
       <div className="absolute inset-0 bg-gradient-to-b from-background/50 via-transparent to-background z-[5]" />
 
+      {/* Decorative corner elements */}
+      <div className="absolute top-0 left-0 w-32 h-32 border-l-[0.5px] border-t-[0.5px] border-primary/10 z-[6]" />
+      <div className="absolute top-0 right-0 w-32 h-32 border-r-[0.5px] border-t-[0.5px] border-primary/10 z-[6]" />
+      <div className="absolute bottom-0 left-0 w-32 h-32 border-l-[0.5px] border-b-[0.5px] border-primary/10 z-[6]" />
+      <div className="absolute bottom-0 right-0 w-32 h-32 border-r-[0.5px] border-b-[0.5px] border-primary/10 z-[6]" />
+
+      {/* Floating particles effect */}
+      {[...Array(12)].map((_, i) => (
+        <motion.div
+          key={i}
+          className="absolute w-1 h-1 bg-primary/20 rounded-full z-[4]"
+          style={{
+            left: `${Math.random() * 100}%`,
+            top: `${Math.random() * 100}%`,
+          }}
+          animate={{
+            y: [0, -30, 0],
+            opacity: [0.2, 0.6, 0.2],
+          }}
+          transition={{
+            duration: 3 + Math.random() * 4,
+            repeat: Infinity,
+            delay: Math.random() * 2,
+          }}
+        />
+      ))}
+
       <div className="container mx-auto px-8 relative z-[10]">
-        <div className="flex flex-col items-center lg:items-start justify-center min-h-screen pt-24 text-center lg:text-left">
+        <div className="flex flex-col items-center lg:items-start justify-center min-h-screen text-center lg:text-left">
           
+          {/* Decorative top dash */}
+          <motion.div
+            initial={{ scaleX: 0, opacity: 0 }}
+            animate={{ scaleX: 1, opacity: 1 }}
+            transition={{ duration: 1, delay: 0.3 }}
+            className="w-20 h-[1px] bg-gradient-to-r from-transparent via-primary to-transparent mb-12 origin-center"
+          />
+
           {/* Name — ALI */}
           <motion.h1
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.5 }}
-            className="text-6xl md:text-7xl lg:text-8xl font-light mb-1 font-playfair"
+            className="text-6xl md:text-7xl lg:text-8xl font-light mb-2 font-playfair"
             style={{ letterSpacing: "-0.01em", lineHeight: 0.95 }}
           >
             ALI
@@ -73,60 +151,75 @@ const HeroSection = memo(() => {
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
-            className="text-6xl md:text-7xl lg:text-8xl font-bold italic mb-6 font-playfair text-gradient-gold-white"
+            className="text-6xl md:text-7xl lg:text-8xl font-bold italic mb-8 font-playfair text-gradient-gold-white"
             style={{ letterSpacing: "-0.01em", lineHeight: 0.95 }}
           >
             KRAYEM
           </motion.h1>
 
-          {/* DIGITAL CREATOR tagline with gold lines on each side */}
+          {/* AI CONTENT CREATOR with decorative dashes */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.65 }}
-            className="flex items-center gap-3 mb-5"
+            className="flex items-center gap-4 mb-4"
           >
-            <div className="w-8 md:w-10 h-[0.5px] bg-gradient-to-r from-transparent to-primary/50" />
-            <span className="text-[10px] md:text-[11px] tracking-[0.35em] text-primary/60 uppercase font-cinzel">
-              Digital Creator
-            </span>
-            <div className="w-8 md:w-10 h-[0.5px] bg-gradient-to-l from-transparent to-primary/50" />
-          </motion.div>
+            {/* Left dash */}
+            <motion.div
+              initial={{ scaleX: 0 }}
+              animate={{ scaleX: 1 }}
+              transition={{ duration: 0.6, delay: 0.65 }}
+              className="w-8 md:w-10 h-[1px] bg-gradient-to-r from-transparent to-primary/60 origin-left"
+            />
+            
+            {/* AI CONTENT CREATOR - Letter by letter animation in GOLD */}
+            <div className="text-xs md:text-sm tracking-[0.45em] uppercase font-cinzel text-primary flex">
+              {"AI Content Creator".split("").map((char, index) => (
+                <motion.span
+                  key={index}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{
+                    duration: 0.1,
+                    delay: 0.65 + index * 0.05,
+                  }}
+                  className={char === " " ? "w-2" : ""}
+                >
+                  {char === " " ? "\u00A0" : char}
+                </motion.span>
+              ))}
+            </div>
 
-          {/* Typed lines — both stay visible */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.7 }}
-            className="text-primary/80 text-sm md:text-base max-w-xl mb-4 leading-relaxed tracking-[0.2em] font-cinzel uppercase"
-          >
-            <TypeWriter
-              texts={["AI VISUAL CREATOR", "AI CONTENT PRODUCTION"]}
-              speed={80}
-              delay={1500}
+            {/* Right dash */}
+            <motion.div
+              initial={{ scaleX: 0 }}
+              animate={{ scaleX: 1 }}
+              transition={{ duration: 0.6, delay: 0.65 }}
+              className="w-8 md:w-10 h-[1px] bg-gradient-to-l from-transparent to-primary/60 origin-right"
             />
           </motion.div>
 
-          {/* Trust micro-line */}
+          {/* Description text */}
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.75 }}
-            className="text-[9px] md:text-[10px] tracking-[0.25em] text-muted-foreground/30 uppercase font-cinzel mb-10"
+            transition={{ duration: 0.8, delay: 1.5 }}
+            className="text-[10px] md:text-xs max-w-md text-muted-foreground/50 mb-10 leading-relaxed font-light tracking-wide"
           >
-            Cinematic AI&ensp;•&ensp;Commercial Visuals
+            Cinematic and digital visual creation using AI tools
           </motion.p>
 
-          {/* Luxury Buttons — stacked on mobile, side by side on desktop */}
+          {/* Luxury Buttons */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.8 }}
+            transition={{ duration: 0.8, delay: 1.6 }}
             className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-12 w-full sm:w-auto items-center lg:items-start"
           >
             {/* Primary — Gold Filled with shimmer */}
             <motion.a
               href="#services"
+              whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.97 }}
               className="group relative overflow-hidden w-[220px] sm:w-[185px] h-[48px] flex items-center justify-center cursor-pointer"
             >
@@ -142,6 +235,7 @@ const HeroSection = memo(() => {
             {/* Secondary — Outline with corner accents */}
             <motion.a
               href="#portfolio"
+              whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.97 }}
               className="group relative overflow-hidden w-[220px] sm:w-[185px] h-[48px] flex items-center justify-center cursor-pointer"
             >
@@ -157,12 +251,12 @@ const HeroSection = memo(() => {
             </motion.a>
           </motion.div>
 
-          {/* Social Links */}
+          {/* Social Links with enhanced styling */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 1 }}
-            className="flex gap-4"
+            transition={{ duration: 0.8, delay: 1.7 }}
+            className="flex gap-4 mb-4"
           >
             {socialLinks.map((social, index) => (
               <motion.a
@@ -173,44 +267,72 @@ const HeroSection = memo(() => {
                 aria-label={social.label}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 1 + index * 0.1 }}
+                transition={{ duration: 0.5, delay: 1.7 + index * 0.1 }}
                 whileHover={{ scale: 1.1, y: -2 }}
                 whileTap={{ scale: 0.95 }}
-                className="w-10 h-10 rounded-full border border-muted-foreground/15 flex items-center justify-center text-muted-foreground/40 hover:border-primary/50 hover:text-primary transition-all duration-300"
+                className="relative w-10 h-10 rounded-full border border-muted-foreground/20 flex items-center justify-center text-muted-foreground/50 hover:border-primary/50 hover:text-primary transition-all duration-300 backdrop-blur-sm"
                 style={{ willChange: "transform" }}
               >
-                <social.icon size={16} />
+                <div className="absolute inset-0 rounded-full bg-primary/0 group-hover:bg-primary/5 transition-colors duration-300" />
+                <social.icon size={16} className="relative z-10" />
               </motion.a>
             ))}
           </motion.div>
+
+          {/* Contact indicator */}
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 2 }}
+            className="text-[9px] tracking-[0.25em] text-muted-foreground/30 uppercase font-cinzel"
+          >
+            Where Ideas Become Reality
+          </motion.p>
         </div>
       </div>
 
-      {/* Animated Scroll indicator */}
+      {/* Animated Scroll indicator with enhanced visibility */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 1, delay: 1.2 }}
+        transition={{ duration: 1, delay: 2.2 }}
         className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20"
       >
         <motion.div
-          className="w-5 h-8 rounded-full border border-muted-foreground/20 flex justify-center pt-1.5 cursor-pointer"
-          whileHover={{ borderColor: "hsl(43 74% 49%)" }}
-          onClick={() => document.getElementById("about")?.scrollIntoView({ behavior: "smooth" })}
+          className="w-5 h-8 rounded-full border border-primary/30 flex justify-center pt-1.5 cursor-pointer hover:border-primary/60 transition-colors duration-300"
+          onClick={() =>
+            document.getElementById("about")?.scrollIntoView({ behavior: "smooth" })
+          }
         >
           <motion.div
             animate={{ y: [0, 7, 0] }}
             transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
-            className="w-[2px] h-[7px] rounded-full bg-primary/50"
+            className="w-[2px] h-[7px] rounded-full bg-primary/60"
           />
         </motion.div>
         <motion.p
-          className="text-[8px] text-muted-foreground/30 mt-2 text-center uppercase tracking-[0.35em] font-cinzel"
-          animate={{ opacity: [0.2, 0.5, 0.2] }}
+          className="text-[8px] text-muted-foreground/40 mt-2 text-center uppercase tracking-[0.35em] font-cinzel"
+          animate={{ opacity: [0.3, 0.6, 0.3] }}
           transition={{ duration: 2.5, repeat: Infinity }}
         >
           Scroll
         </motion.p>
+      </motion.div>
+
+      {/* Side decorative elements */}
+      <motion.div
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 1, delay: 2.3 }}
+        className="hidden lg:block absolute left-8 top-1/2 -translate-y-1/2 z-[10]"
+      >
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-[1px] h-16 bg-gradient-to-b from-transparent to-primary/30" />
+          <div className="text-[8px] tracking-[0.3em] uppercase text-muted-foreground/30 font-cinzel [writing-mode:vertical-lr] rotate-180">
+            Creative Studio
+          </div>
+          <div className="w-[1px] h-16 bg-gradient-to-t from-transparent to-primary/30" />
+        </div>
       </motion.div>
     </section>
   );

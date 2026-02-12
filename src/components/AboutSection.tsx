@@ -84,14 +84,12 @@ const AboutSection = memo(() => {
               transition={{ duration: 0.8, delay: 0.2 }}
             >
               <p>
-                I'm an AI visual creator and digital media professional specializing in AI-generated cinematic and commercial content.
+               AI visual content creator working in digital media.
+Focused on developing visual concepts and cinematic-style content.
+Projects are developed using AI tools and creative systems.
+Content is created for digital use.
               </p>
-              <p>
-                I collaborate with individuals, creatives, and brands to transform ideas into striking visual content, adapting each project to its concept while keeping the vision clear and visually consistent.
-              </p>
-              <p>
-                My focus is on crafting ultra-realistic cinematic scenes, premium advertising visuals, professional studio photography, and social media content designed for attention and impact.
-              </p>
+             
             </motion.div>
 
           </motion.div>

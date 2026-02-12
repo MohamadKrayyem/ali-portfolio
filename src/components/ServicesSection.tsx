@@ -1,32 +1,27 @@
 import { motion } from "framer-motion";
 import { memo } from "react";
-import { Video, TrendingUp, Share2, Lightbulb, ArrowRight } from "lucide-react";
-import LuxuryButton from "./LuxuryButton";
+import { Video, Image, Lightbulb, Share2 } from "lucide-react";
 
 const services = [
   {
     icon: Video,
-    title: "Cinematic Video Production",
-    description:
-      "AI-generated cinematic scenes and short films.",
+    title: "AI-Generated Cinematic Video Content",
+    description: "Short-form cinematic videos created using AI tools.",
   },
   {
-    icon: TrendingUp,
-    title: "Commercial & Advertising Visuals",
-    description:
-      "AI concept ads and commercial visuals for brands.",
-  },
-  {
-    icon: Share2,
-    title: "Photography & Studio Imagery",
-    description:
-      "AI-generated studio-quality imagery (no physical shoots).",
+    icon: Image,
+    title: "AI-Generated Commercial Visual Content",
+    description: "High-quality AI-generated product and subject images.",
   },
   {
     icon: Lightbulb,
-    title: "Social Media Visual Content",
-    description:
-      "AI visuals optimized for digital platforms.",
+    title: "AI Visual Concept Development",
+    description: "AI-created visual drafts exploring creative ideas.",
+  },
+  {
+    icon: Share2,
+    title: "Digital Social Media Visual Content",
+    description: "AI-generated visuals formatted for social media platforms.",
   },
 ];
 
@@ -34,22 +29,22 @@ const processSteps = [
   {
     number: "01",
     title: "Discovery",
-    description: "Understanding your vision and goals",
+    description: "Reviewing project requirements.",
   },
   {
     number: "02",
     title: "Creation",
-    description: "AI-powered content development",
+    description: "Visual content developed using AI tools.",
   },
   {
     number: "03",
     title: "Refinement",
-    description: "Polishing to perfection",
+    description: "Final visual adjustments.",
   },
   {
     number: "04",
     title: "Delivery",
-    description: "Final assets ready to elevate your brand",
+    description: "Digital files prepared for online use.",
   },
 ];
 
@@ -79,9 +74,7 @@ const ServicesSection = memo(() => {
   return (
     <section
       id="services"
-      className="relative py-32 bg-background overflow-hidden"
-    >
-
+      className="relative py-32 bg-background overflow-hidden">
       {/* Subtle gradient overlay */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/[0.02] to-transparent pointer-events-none" />
 
@@ -93,8 +86,7 @@ const ServicesSection = memo(() => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="text-primary text-sm tracking-[0.3em] uppercase font-montserrat block mb-4"
-          >
+            className="text-primary text-sm tracking-[0.3em] uppercase font-montserrat block mb-4">
             What I Offer
           </motion.span>
 
@@ -103,8 +95,7 @@ const ServicesSection = memo(() => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-4xl md:text-6xl font-playfair mb-6"
-          >
+            className="text-4xl md:text-6xl font-playfair mb-6">
             <span className="text-foreground">MY </span>
             <span className="text-gradient-gold">SERVICES</span>
           </motion.h2>
@@ -114,9 +105,8 @@ const ServicesSection = memo(() => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-muted-foreground text-lg max-w-2xl mx-auto font-montserrat"
-          >
-            Elevating brands through AI-powered content creation and storytelling
+            className="text-muted-foreground text-lg max-w-2xl mx-auto font-montserrat">
+           
           </motion.p>
         </div>
 
@@ -126,8 +116,7 @@ const ServicesSection = memo(() => {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.2 }}
-          className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-32"
-        >
+          className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-32">
           {services.map((service, index) => (
             <motion.div
               key={index}
@@ -138,14 +127,13 @@ const ServicesSection = memo(() => {
                 transition: { duration: 0.3 },
               }}
               className="group relative p-10 rounded-lg glass-morphism border border-transparent hover:border-primary/50 transition-all duration-300 hover:shadow-glow cursor-pointer"
-              style={{ willChange: "transform" }}
-            >
+              style={{ willChange: "transform" }}>
+              
               {/* Icon */}
               <motion.div
                 className="mb-6"
                 whileHover={{ scale: 1.1, rotate: 5 }}
-                transition={{ duration: 0.3 }}
-              >
+                transition={{ duration: 0.3 }}>
                 <service.icon
                   size={60}
                   className="text-primary transition-all duration-300"
@@ -176,8 +164,7 @@ const ServicesSection = memo(() => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="text-center mb-16"
-          >
+            className="text-center mb-16">
             <span className="text-primary text-sm tracking-[0.3em] uppercase font-montserrat block mb-4">
               How I Work
             </span>
@@ -200,14 +187,12 @@ const ServicesSection = memo(() => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.6, delay: index * 0.15 }}
-                  className="relative text-center"
-                >
+                  className="relative text-center">
                   {/* Number circle */}
                   <motion.div
                     className="w-16 h-16 rounded-full border-2 border-primary bg-background flex items-center justify-center mx-auto mb-6 relative z-10"
                     whileHover={{ scale: 1.1, borderColor: "hsl(43 74% 49%)" }}
-                    transition={{ duration: 0.3 }}
-                  >
+                    transition={{ duration: 0.3 }}>
                     <span className="text-primary font-playfair text-xl font-bold">
                       {step.number}
                     </span>
@@ -227,7 +212,6 @@ const ServicesSection = memo(() => {
             </div>
           </div>
         </div>
-
       </div>
     </section>
   );
