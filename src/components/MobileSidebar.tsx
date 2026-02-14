@@ -56,7 +56,6 @@ const MobileSidebar = memo(({ isOpen, onClose }: MobileSidebarProps) => {
 
   const handleNavClick = (href: string) => {
     onClose();
-    // Small delay to allow sidebar to start closing
     setTimeout(() => {
       if (href === "#") {
         window.scrollTo({ top: 0, behavior: "smooth" });
@@ -70,31 +69,31 @@ const MobileSidebar = memo(({ isOpen, onClose }: MobileSidebarProps) => {
     <AnimatePresence>
       {isOpen && (
         <>
-          {/* Overlay */}
+          {/* PERFORMANCE: Reduced backdrop-blur from md (12px) to sm (4px) on overlay */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="fixed inset-0 bg-background/80 backdrop-blur-md z-[998]"
+            transition={{ duration: 0.25 }}
+            className="fixed inset-0 bg-background/80 backdrop-blur-sm z-[998]"
             onClick={onClose}
           />
 
-          {/* Sidebar */}
+          {/* Sidebar - PERFORMANCE: tween instead of spring (more predictable, less CPU) */}
           <motion.div
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
-            transition={{ type: "spring", damping: 25, stiffness: 200 }}
+            transition={{ type: "tween", duration: 0.3, ease: "easeOut" }}
             className="fixed top-0 right-0 w-full max-w-[320px] h-full z-[999] bg-gradient-to-br from-background via-background-secondary to-background-tertiary border-l border-primary/20 shadow-luxury"
             style={{ willChange: "transform" }}
           >
-            {/* Close Button */}
+            {/* Close Button - PERFORMANCE: removed rotate animation */}
             <motion.button
-              initial={{ opacity: 0, rotate: -90 }}
-              animate={{ opacity: 1, rotate: 0 }}
-              transition={{ delay: 0.2 }}
-              whileHover={{ rotate: 90, scale: 1.1 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.15 }}
+              whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               onClick={onClose}
               className="absolute top-6 right-6 w-10 h-10 flex items-center justify-center text-muted-foreground hover:text-primary transition-colors"
@@ -107,9 +106,9 @@ const MobileSidebar = memo(({ isOpen, onClose }: MobileSidebarProps) => {
             <div className="flex flex-col h-full px-10 py-20">
               {/* Logo */}
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 }}
+                transition={{ delay: 0.1, duration: 0.3 }}
                 className="mb-16"
               >
                 <h2 className="text-3xl font-playfair">
@@ -119,72 +118,60 @@ const MobileSidebar = memo(({ isOpen, onClose }: MobileSidebarProps) => {
                 </h2>
               </motion.div>
 
-              {/* Navigation */}
+              {/* Navigation - PERFORMANCE: single group animation instead of per-item stagger */}
               <nav className="flex-1">
-                <ul className="space-y-8">
-                  {navItems.map((item, index) => (
-                    <motion.li
-                      key={item.label}
-                      initial={{ opacity: 0, x: 30 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.15 + index * 0.05 }}
-                    >
+                <motion.ul
+                  className="space-y-8"
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.15, duration: 0.3 }}
+                >
+                  {navItems.map((item) => (
+                    <li key={item.label}>
                       <button
                         onClick={() => handleNavClick(item.href)}
                         className="group flex items-center text-lg font-montserrat font-medium text-muted-foreground hover:text-primary transition-colors duration-300 tracking-widest"
                       >
-                        <motion.span
-                          className="w-0 h-[2px] bg-primary mr-0 group-hover:w-6 group-hover:mr-4 transition-all duration-300"
-                        />
+                        <span className="w-0 h-[2px] bg-primary mr-0 group-hover:w-6 group-hover:mr-4 transition-all duration-300" />
                         {item.label}
                       </button>
-                    </motion.li>
+                    </li>
                   ))}
-                </ul>
+                </motion.ul>
               </nav>
 
-              {/* Social Links */}
+              {/* Social Links - PERFORMANCE: single group animation */}
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4 }}
+                transition={{ delay: 0.25, duration: 0.3 }}
                 className="pt-8 border-t border-primary/20"
               >
                 <div className="flex gap-4 mb-6">
                   {socialLinks.map((social, index) => (
-                    <motion.a
+                    <a
                       key={index}
                       href={social.href}
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label={social.label}
-                      initial={{ opacity: 0, scale: 0 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ delay: 0.45 + index * 0.05 }}
-                      whileHover={{ scale: 1.2, y: -4 }}
-                      whileTap={{ scale: 0.9 }}
                       className="w-10 h-10 rounded-full border border-muted flex items-center justify-center text-primary hover:bg-primary hover:text-background transition-all duration-300"
                     >
                       <social.icon size={18} />
-                    </motion.a>
+                    </a>
                   ))}
                 </div>
 
-                <motion.p
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.6 }}
-                  className="text-xs text-muted-foreground/50 text-center tracking-wider"
-                >
+                <p className="text-xs text-muted-foreground/50 text-center tracking-wider">
                   © {new Date().getFullYear()} Ali Krayem
-                </motion.p>
+                </p>
               </motion.div>
 
               {/* Decorative Gold Line */}
               <motion.div
                 initial={{ scaleY: 0 }}
                 animate={{ scaleY: 1 }}
-                transition={{ delay: 0.2, duration: 0.5 }}
+                transition={{ delay: 0.2, duration: 0.4 }}
                 className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-40 bg-gradient-to-b from-transparent via-primary to-transparent"
                 style={{ transformOrigin: "center" }}
               />

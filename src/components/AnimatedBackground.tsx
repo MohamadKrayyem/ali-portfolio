@@ -1,5 +1,4 @@
 import { useEffect, useRef, memo } from "react";
-import { motion } from "framer-motion";
 
 interface Particle {
   x: number;
@@ -8,7 +7,6 @@ interface Particle {
   speedX: number;
   speedY: number;
   opacity: number;
-  type: "circle" | "triangle";
   isGold: boolean;
 }
 
@@ -16,7 +14,7 @@ const AnimatedBackground = memo(() => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const particlesRef = useRef<Particle[]>([]);
   const animationRef = useRef<number>();
-  const mouseRef = useRef({ x: 0, y: 0 });
+  const isVisibleRef = useRef(true);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -25,63 +23,73 @@ const AnimatedBackground = memo(() => {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
+    // PERFORMANCE: Check for reduced motion
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    // PERFORMANCE: Detect mobile
+    const isMobile = window.innerWidth < 768;
+
     const resizeCanvas = () => {
       canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight * 3;
+      // PERFORMANCE: Only 1x screen height, not 3x
+      canvas.height = window.innerHeight;
     };
 
     const createParticles = () => {
       const particles: Particle[] = [];
-      const count = Math.min(50, Math.floor(window.innerWidth / 30));
+      // PERFORMANCE: Reduced from 50 to 15 (mobile) or 25 (desktop)
+      const count = isMobile ? 15 : 25;
 
       for (let i = 0; i < count; i++) {
         particles.push({
           x: Math.random() * canvas.width,
           y: Math.random() * canvas.height,
-          size: Math.random() * 3 + 1,
+          size: Math.random() * 2.5 + 1,
           speedX: (Math.random() - 0.5) * 0.3,
           speedY: (Math.random() - 0.5) * 0.3,
           opacity: Math.random() * 0.3 + 0.1,
-          type: Math.random() > 0.7 ? "triangle" : "circle",
           isGold: Math.random() > 0.7,
         });
       }
       particlesRef.current = particles;
     };
 
+    // PERFORMANCE: Simplified drawing - circles only, no triangles
     const drawParticle = (p: Particle) => {
-      const color = p.isGold ? `rgba(201, 162, 39, ${p.opacity})` : `rgba(100, 100, 100, ${p.opacity})`;
+      const color = p.isGold
+        ? `rgba(201, 162, 39, ${p.opacity})`
+        : `rgba(100, 100, 100, ${p.opacity})`;
       ctx.fillStyle = color;
-
-      if (p.type === "circle") {
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fill();
-      } else {
-        ctx.beginPath();
-        ctx.moveTo(p.x, p.y - p.size);
-        ctx.lineTo(p.x - p.size, p.y + p.size);
-        ctx.lineTo(p.x + p.size, p.y + p.size);
-        ctx.closePath();
-        ctx.fill();
-      }
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+      ctx.fill();
     };
 
-    const animate = () => {
+    // PERFORMANCE: Throttle to ~30fps on mobile instead of 60fps
+    let lastFrame = 0;
+    const frameInterval = isMobile ? 33 : 16; // ~30fps mobile, ~60fps desktop
+
+    const animate = (timestamp: number) => {
+      // PERFORMANCE: Skip frames when tab is hidden
+      if (!isVisibleRef.current) {
+        animationRef.current = requestAnimationFrame(animate);
+        return;
+      }
+
+      // PERFORMANCE: Throttle frame rate
+      if (timestamp - lastFrame < frameInterval) {
+        animationRef.current = requestAnimationFrame(animate);
+        return;
+      }
+      lastFrame = timestamp;
+
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       particlesRef.current.forEach((p) => {
         p.x += p.speedX;
         p.y += p.speedY;
 
-        // Mouse interaction
-        const dx = mouseRef.current.x - p.x;
-        const dy = mouseRef.current.y - p.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < 100) {
-          p.x -= dx * 0.01;
-          p.y -= dy * 0.01;
-        }
+        // PERFORMANCE: Removed mouse interaction (expensive distance calc per particle)
 
         // Wrap around
         if (p.x < 0) p.x = canvas.width;
@@ -95,21 +103,33 @@ const AnimatedBackground = memo(() => {
       animationRef.current = requestAnimationFrame(animate);
     };
 
-    const handleMouseMove = (e: MouseEvent) => {
-      mouseRef.current = { x: e.clientX, y: e.clientY + window.scrollY };
+    // PERFORMANCE: Pause when tab hidden
+    const handleVisibility = () => {
+      isVisibleRef.current = document.visibilityState === "visible";
+    };
+    document.addEventListener("visibilitychange", handleVisibility);
+
+    // Debounced resize
+    let resizeTimeout: ReturnType<typeof setTimeout>;
+    const handleResize = () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        resizeCanvas();
+        createParticles();
+      }, 250);
     };
 
     resizeCanvas();
     createParticles();
-    animate();
+    animationRef.current = requestAnimationFrame(animate);
 
-    window.addEventListener("resize", resizeCanvas);
-    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("resize", handleResize);
 
     return () => {
       if (animationRef.current) cancelAnimationFrame(animationRef.current);
-      window.removeEventListener("resize", resizeCanvas);
-      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("resize", handleResize);
+      document.removeEventListener("visibilitychange", handleVisibility);
+      clearTimeout(resizeTimeout);
     };
   }, []);
 
@@ -122,20 +142,16 @@ const AnimatedBackground = memo(() => {
         style={{ willChange: "transform" }}
       />
 
-      {/* Animated Gradient Overlay */}
-      <motion.div
+      {/* PERFORMANCE: Static gradient instead of animated Framer Motion gradient */}
+      <div
         className="absolute inset-0"
-        animate={{
-          background: [
+        style={{
+          background:
             "linear-gradient(180deg, rgba(10,10,10,0.9) 0%, rgba(26,26,26,0.8) 50%, rgba(10,10,10,0.9) 100%)",
-            "linear-gradient(180deg, rgba(26,26,26,0.9) 0%, rgba(10,10,10,0.8) 50%, rgba(26,26,26,0.9) 100%)",
-            "linear-gradient(180deg, rgba(10,10,10,0.9) 0%, rgba(26,26,26,0.8) 50%, rgba(10,10,10,0.9) 100%)",
-          ],
         }}
-        transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
       />
 
-      {/* Film Grain Overlay */}
+      {/* Film Grain Overlay - static, no performance cost */}
       <div
         className="absolute inset-0 opacity-[0.03] mix-blend-overlay"
         style={{
@@ -143,36 +159,24 @@ const AnimatedBackground = memo(() => {
         }}
       />
 
-      {/* Bokeh Effects */}
-      <motion.div
+      {/* PERFORMANCE: Single static bokeh instead of 2 animated ones */}
+      <div
         className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full bg-primary/5 blur-[100px]"
-        animate={{
-          scale: [1, 1.2, 1],
-          opacity: [0.3, 0.5, 0.3],
-        }}
-        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-        style={{ willChange: "transform, opacity" }}
+        style={{ opacity: 0.4 }}
       />
-      <motion.div
+      <div
         className="absolute bottom-1/3 right-1/4 w-80 h-80 rounded-full bg-primary/3 blur-[80px]"
-        animate={{
-          scale: [1.2, 1, 1.2],
-          opacity: [0.2, 0.4, 0.2],
-        }}
-        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-        style={{ willChange: "transform, opacity" }}
+        style={{ opacity: 0.3 }}
       />
 
-      {/* Ambient Light Rays */}
-      <motion.div
+      {/* PERFORMANCE: Static ambient light instead of animated */}
+      <div
         className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[600px]"
         style={{
-          background: "radial-gradient(ellipse at center top, rgba(201, 162, 39, 0.05) 0%, transparent 70%)",
+          background:
+            "radial-gradient(ellipse at center top, rgba(201, 162, 39, 0.05) 0%, transparent 70%)",
+          opacity: 0.6,
         }}
-        animate={{
-          opacity: [0.5, 0.8, 0.5],
-        }}
-        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
       />
     </div>
   );

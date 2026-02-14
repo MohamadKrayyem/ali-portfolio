@@ -58,7 +58,7 @@ const HeroSection = memo(() => {
         "
       />
 
-      {/* Enhanced grid pattern overlay with subtle animation */}
+      {/* Enhanced grid pattern overlay */}
       <div
         className="absolute inset-0 opacity-[0.03] z-[3]"
         style={{
@@ -68,31 +68,10 @@ const HeroSection = memo(() => {
         }}
       />
 
-      {/* Animated gradient orbs for depth */}
-      <motion.div
-        className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full bg-primary/5 blur-[120px] z-[4]"
-        animate={{
-          scale: [1, 1.2, 1],
-          opacity: [0.3, 0.5, 0.3],
-        }}
-        transition={{
-          duration: 8,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-      />
-      <motion.div
-        className="absolute bottom-1/4 right-1/4 w-96 h-96 rounded-full bg-primary/3 blur-[100px] z-[4]"
-        animate={{
-          scale: [1.2, 1, 1.2],
-          opacity: [0.2, 0.4, 0.2],
-        }}
-        transition={{
-          duration: 10,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-      />
+      {/* PERFORMANCE: Static gradient orbs instead of animated ones */}
+      {/* (AnimatedBackground already has bokeh, no need to duplicate) */}
+      <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full bg-primary/5 blur-[120px] z-[4] opacity-40" />
+      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 rounded-full bg-primary/3 blur-[100px] z-[4] opacity-30" />
 
       {/* Subtle gradient overlay */}
       <div className="absolute inset-0 bg-gradient-to-b from-background/50 via-transparent to-background z-[5]" />
@@ -103,23 +82,16 @@ const HeroSection = memo(() => {
       <div className="absolute bottom-0 left-0 w-32 h-32 border-l-[0.5px] border-b-[0.5px] border-primary/10 z-[6]" />
       <div className="absolute bottom-0 right-0 w-32 h-32 border-r-[0.5px] border-b-[0.5px] border-primary/10 z-[6]" />
 
-      {/* Floating particles effect */}
-      {[...Array(12)].map((_, i) => (
-        <motion.div
+      {/* PERFORMANCE: Reduced from 12 to 5 floating particles, CSS animation instead of Framer Motion */}
+      {[...Array(5)].map((_, i) => (
+        <div
           key={i}
-          className="absolute w-1 h-1 bg-primary/20 rounded-full z-[4]"
+          className="absolute w-1 h-1 bg-primary/20 rounded-full z-[4] animate-float-particle"
           style={{
-            left: `${Math.random() * 100}%`,
-            top: `${Math.random() * 100}%`,
-          }}
-          animate={{
-            y: [0, -30, 0],
-            opacity: [0.2, 0.6, 0.2],
-          }}
-          transition={{
-            duration: 3 + Math.random() * 4,
-            repeat: Infinity,
-            delay: Math.random() * 2,
+            left: `${15 + i * 18}%`,
+            top: `${20 + i * 12}%`,
+            animationDelay: `${i * 0.8}s`,
+            animationDuration: `${4 + i}s`,
           }}
         />
       ))}
@@ -131,26 +103,26 @@ const HeroSection = memo(() => {
           <motion.div
             initial={{ scaleX: 0, opacity: 0 }}
             animate={{ scaleX: 1, opacity: 1 }}
-            transition={{ duration: 1, delay: 0.3 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
             className="w-20 h-[1px] bg-gradient-to-r from-transparent via-primary to-transparent mb-12 origin-center"
           />
 
           {/* Name — ALI */}
           <motion.h1
-            initial={{ opacity: 0, y: 40 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.5 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
             className="text-6xl md:text-7xl lg:text-8xl font-light mb-2 font-playfair"
             style={{ letterSpacing: "-0.01em", lineHeight: 0.95 }}
           >
             ALI
           </motion.h1>
 
-          {/* Name — KRAYEM (gold gradient + italic for luxury) */}
+          {/* Name — KRAYEM */}
           <motion.h1
-            initial={{ opacity: 0, y: 40 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.6 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
             className="text-6xl md:text-7xl lg:text-8xl font-bold italic mb-8 font-playfair text-gradient-gold-white"
             style={{ letterSpacing: "-0.01em", lineHeight: 0.95 }}
           >
@@ -159,51 +131,43 @@ const HeroSection = memo(() => {
 
           {/* AI CONTENT CREATOR with decorative dashes */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.65 }}
+            transition={{ duration: 0.6, delay: 0.5 }}
             className="flex items-center gap-4 mb-4"
           >
             {/* Left dash */}
             <motion.div
               initial={{ scaleX: 0 }}
               animate={{ scaleX: 1 }}
-              transition={{ duration: 0.6, delay: 0.65 }}
+              transition={{ duration: 0.5, delay: 0.5 }}
               className="w-8 md:w-10 h-[1px] bg-gradient-to-r from-transparent to-primary/60 origin-left"
             />
             
-            {/* AI CONTENT CREATOR - Letter by letter animation in GOLD */}
-            <div className="text-xs md:text-sm tracking-[0.45em] uppercase font-cinzel text-primary flex">
-              {"AI Content Creator".split("").map((char, index) => (
-                <motion.span
-                  key={index}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{
-                    duration: 0.1,
-                    delay: 0.65 + index * 0.05,
-                  }}
-                  className={char === " " ? "w-2" : ""}
-                >
-                  {char === " " ? "\u00A0" : char}
-                </motion.span>
-              ))}
-            </div>
+            {/* PERFORMANCE: Single animation for whole text instead of letter-by-letter (18 motion.spans → 1 motion.div) */}
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.6 }}
+              className="text-xs md:text-sm tracking-[0.45em] uppercase font-cinzel text-primary"
+            >
+              AI Content Creator
+            </motion.div>
 
             {/* Right dash */}
             <motion.div
               initial={{ scaleX: 0 }}
               animate={{ scaleX: 1 }}
-              transition={{ duration: 0.6, delay: 0.65 }}
+              transition={{ duration: 0.5, delay: 0.5 }}
               className="w-8 md:w-10 h-[1px] bg-gradient-to-l from-transparent to-primary/60 origin-right"
             />
           </motion.div>
 
           {/* Description text */}
           <motion.p
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 1.5 }}
+            transition={{ duration: 0.6, delay: 0.8 }}
             className="text-[10px] md:text-xs max-w-md text-muted-foreground/50 mb-10 leading-relaxed font-light tracking-wide"
           >
             Cinematic and digital visual creation using AI tools
@@ -211,9 +175,9 @@ const HeroSection = memo(() => {
 
           {/* Luxury Buttons */}
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 1.6 }}
+            transition={{ duration: 0.6, delay: 0.9 }}
             className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-12 w-full sm:w-auto items-center lg:items-start"
           >
             {/* Primary — Gold Filled with shimmer */}
@@ -239,8 +203,8 @@ const HeroSection = memo(() => {
               whileTap={{ scale: 0.97 }}
               className="group relative overflow-hidden w-[220px] sm:w-[185px] h-[48px] flex items-center justify-center cursor-pointer"
             >
-              <div className="absolute inset-0 border border-primary/30 group-hover:border-primary/60 transition-all duration-500" />
-              <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/5 transition-all duration-500" />
+              <div className="absolute inset-0 border border-primary/30 group-hover:border-primary/60 transition-all duration-300" />
+              <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/5 transition-all duration-300" />
               <div className="absolute top-0 left-0 w-3 h-[1px] bg-primary group-hover:w-5 transition-all duration-300" />
               <div className="absolute top-0 left-0 w-[1px] h-3 bg-primary group-hover:h-5 transition-all duration-300" />
               <div className="absolute bottom-0 right-0 w-3 h-[1px] bg-primary group-hover:w-5 transition-all duration-300" />
@@ -251,11 +215,11 @@ const HeroSection = memo(() => {
             </motion.a>
           </motion.div>
 
-          {/* Social Links with enhanced styling */}
+          {/* Social Links */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 1.7 }}
+            transition={{ duration: 0.6, delay: 1.0 }}
             className="flex gap-4 mb-4"
           >
             {socialLinks.map((social, index) => (
@@ -265,15 +229,13 @@ const HeroSection = memo(() => {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={social.label}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 1.7 + index * 0.1 }}
+                transition={{ duration: 0.4, delay: 1.0 + index * 0.1 }}
                 whileHover={{ scale: 1.1, y: -2 }}
                 whileTap={{ scale: 0.95 }}
-                className="relative w-10 h-10 rounded-full border border-muted-foreground/20 flex items-center justify-center text-muted-foreground/50 hover:border-primary/50 hover:text-primary transition-all duration-300 backdrop-blur-sm"
-                style={{ willChange: "transform" }}
+                className="relative w-10 h-10 rounded-full border border-muted-foreground/20 flex items-center justify-center text-muted-foreground/50 hover:border-primary/50 hover:text-primary transition-all duration-300"
               >
-                <div className="absolute inset-0 rounded-full bg-primary/0 group-hover:bg-primary/5 transition-colors duration-300" />
                 <social.icon size={16} className="relative z-10" />
               </motion.a>
             ))}
@@ -283,7 +245,7 @@ const HeroSection = memo(() => {
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 2 }}
+            transition={{ duration: 0.6, delay: 1.2 }}
             className="text-[9px] tracking-[0.25em] text-muted-foreground/30 uppercase font-cinzel"
           >
             Where Ideas Become Reality
@@ -291,39 +253,33 @@ const HeroSection = memo(() => {
         </div>
       </div>
 
-      {/* Animated Scroll indicator with enhanced visibility */}
+      {/* Scroll indicator */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 1, delay: 2.2 }}
+        transition={{ duration: 0.6, delay: 1.4 }}
         className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20"
       >
-        <motion.div
+        <div
           className="w-5 h-8 rounded-full border border-primary/30 flex justify-center pt-1.5 cursor-pointer hover:border-primary/60 transition-colors duration-300"
           onClick={() =>
             document.getElementById("about")?.scrollIntoView({ behavior: "smooth" })
           }
         >
-          <motion.div
-            animate={{ y: [0, 7, 0] }}
-            transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
-            className="w-[2px] h-[7px] rounded-full bg-primary/60"
-          />
-        </motion.div>
-        <motion.p
-          className="text-[8px] text-muted-foreground/40 mt-2 text-center uppercase tracking-[0.35em] font-cinzel"
-          animate={{ opacity: [0.3, 0.6, 0.3] }}
-          transition={{ duration: 2.5, repeat: Infinity }}
-        >
+          {/* PERFORMANCE: CSS animation instead of Framer Motion infinite */}
+          <div className="w-[2px] h-[7px] rounded-full bg-primary/60 animate-scroll-dot" />
+        </div>
+        {/* PERFORMANCE: CSS animation instead of Framer Motion infinite */}
+        <p className="text-[8px] text-muted-foreground/40 mt-2 text-center uppercase tracking-[0.35em] font-cinzel animate-pulse-slow">
           Scroll
-        </motion.p>
+        </p>
       </motion.div>
 
       {/* Side decorative elements */}
       <motion.div
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 1, delay: 2.3 }}
+        transition={{ duration: 0.8, delay: 1.5 }}
         className="hidden lg:block absolute left-8 top-1/2 -translate-y-1/2 z-[10]"
       >
         <div className="flex flex-col items-center gap-4">

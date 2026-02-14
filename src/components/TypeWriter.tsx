@@ -1,5 +1,4 @@
 import { useState, useEffect, memo } from "react";
-import { motion } from "framer-motion";
 
 interface TypeWriterProps {
   text?: string;
@@ -13,7 +12,6 @@ const TypeWriter = memo(({ text, texts, className = "", delay = 0, speed = 40 }:
   const [completedLines, setCompletedLines] = useState<string[]>([]);
   const [currentLine, setCurrentLine] = useState("");
   const [started, setStarted] = useState(false);
-  const [showCursor, setShowCursor] = useState(true);
   const [done, setDone] = useState(false);
 
   const textList = texts && texts.length > 0 ? texts : text ? [text] : [""];
@@ -31,7 +29,6 @@ const TypeWriter = memo(({ text, texts, className = "", delay = 0, speed = 40 }:
       for (let i = 0; i < textList.length; i++) {
         if (cancelled) break;
 
-        // Type current line letter by letter
         const txt = textList[i];
         for (let c = 1; c <= txt.length; c++) {
           if (cancelled) break;
@@ -39,7 +36,6 @@ const TypeWriter = memo(({ text, texts, className = "", delay = 0, speed = 40 }:
           setCurrentLine(txt.slice(0, c));
         }
 
-        // If not the last line, move it to completed and pause
         if (i < textList.length - 1) {
           if (cancelled) break;
           await new Promise((r) => setTimeout(r, 400));
@@ -47,7 +43,6 @@ const TypeWriter = memo(({ text, texts, className = "", delay = 0, speed = 40 }:
           setCurrentLine("");
         }
       }
-      // Done typing everything
       if (!cancelled) {
         setTimeout(() => setDone(true), 1500);
       }
@@ -57,23 +52,16 @@ const TypeWriter = memo(({ text, texts, className = "", delay = 0, speed = 40 }:
     return () => { cancelled = true; };
   }, [started]);
 
-  // Cursor blink
-  useEffect(() => {
-    const interval = setInterval(() => setShowCursor((p) => !p), 530);
-    return () => clearInterval(interval);
-  }, []);
-
   return (
     <span className={className}>
       {completedLines.map((line, i) => (
         <span key={i} className="block">{line}</span>
       ))}
       {currentLine}
+      {/* PERFORMANCE: CSS animation for cursor blink instead of JS setInterval + Framer Motion */}
       {started && !done && (
-        <motion.span
-          className="inline-block w-[2px] h-[1em] bg-primary ml-1 align-middle"
-          animate={{ opacity: showCursor ? 1 : 0 }}
-          transition={{ duration: 0.1 }}
+        <span
+          className="inline-block w-[2px] h-[1em] bg-primary ml-1 align-middle animate-cursor-blink"
         />
       )}
     </span>

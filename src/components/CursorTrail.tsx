@@ -1,72 +1,80 @@
-import { useEffect, useState, memo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useEffect, useRef, memo } from "react";
 
-interface Trail {
-  id: number;
-  x: number;
-  y: number;
-}
-
+// PERFORMANCE: Complete rewrite using CSS instead of Framer Motion AnimatePresence
+// AnimatePresence was creating/destroying React elements on every mouse move
 const CursorTrail = memo(() => {
-  const [trails, setTrails] = useState<Trail[]>([]);
-  const [isVisible, setIsVisible] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const dotsRef = useRef<HTMLDivElement[]>([]);
+  const currentDot = useRef(0);
+  const maxDots = 5;
 
   useEffect(() => {
     // Only show on desktop
     if (window.matchMedia("(pointer: coarse)").matches) return;
+    // Respect reduced motion
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-    let trailId = 0;
+    const container = containerRef.current;
+    if (!container) return;
+
+    // Pre-create dot elements (reuse instead of create/destroy)
+    const dots: HTMLDivElement[] = [];
+    for (let i = 0; i < maxDots; i++) {
+      const dot = document.createElement("div");
+      dot.className = "cursor-trail-dot";
+      dot.style.cssText = `
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--cursor-trail-color, hsl(43 50% 55%));
+        pointer-events: none;
+        opacity: 0;
+        transform: scale(0);
+        transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+        will-change: transform, opacity;
+      `;
+      container.appendChild(dot);
+      dots.push(dot);
+    }
+    dotsRef.current = dots;
+
     let lastTime = 0;
-    const throttleMs = 50;
+    const throttleMs = 80; // PERFORMANCE: Higher throttle than original (50ms → 80ms)
 
     const handleMouseMove = (e: MouseEvent) => {
       const now = Date.now();
       if (now - lastTime < throttleMs) return;
       lastTime = now;
 
-      setIsVisible(true);
-      const newTrail: Trail = {
-        id: trailId++,
-        x: e.clientX,
-        y: e.clientY,
-      };
+      const dot = dots[currentDot.current % maxDots];
+      dot.style.left = `${e.clientX - 4}px`;
+      dot.style.top = `${e.clientY - 4}px`;
+      dot.style.opacity = "0.6";
+      dot.style.transform = "scale(1)";
 
-      setTrails((prev) => [...prev.slice(-6), newTrail]);
+      // Fade out after a short delay
+      setTimeout(() => {
+        dot.style.opacity = "0";
+        dot.style.transform = "scale(0)";
+      }, 150);
+
+      currentDot.current++;
     };
 
-    const handleMouseLeave = () => setIsVisible(false);
-
     window.addEventListener("mousemove", handleMouseMove, { passive: true });
-    document.addEventListener("mouseleave", handleMouseLeave);
 
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
-      document.removeEventListener("mouseleave", handleMouseLeave);
+      dots.forEach((dot) => dot.remove());
     };
   }, []);
 
-  if (!isVisible) return null;
-
   return (
-    <div className="fixed inset-0 pointer-events-none z-[150]">
-      <AnimatePresence>
-        {trails.map((trail, index) => (
-          <motion.div
-            key={trail.id}
-            initial={{ opacity: 0.6, scale: 1 }}
-            animate={{ opacity: 0, scale: 0 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
-            className="absolute w-2 h-2 rounded-full bg-primary"
-            style={{
-              left: trail.x - 4,
-              top: trail.y - 4,
-              willChange: "transform, opacity",
-            }}
-          />
-        ))}
-      </AnimatePresence>
-    </div>
+    <div
+      ref={containerRef}
+      className="fixed inset-0 pointer-events-none z-[150]"
+    />
   );
 });
 

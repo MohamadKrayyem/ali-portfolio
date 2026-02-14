@@ -2,14 +2,16 @@
 
 @tailwind base;
 
+/* PERFORMANCE: Shimmer only triggers on hover via class, not infinite */
 @keyframes shimmer {
   0% { transform: translateX(-100%); }
   100% { transform: translateX(100%); }
 }
 
 .animate-shimmer {
-  animation: shimmer 2s infinite;
+  animation: shimmer 1s ease-out;
 }
+
 @tailwind components;
 @tailwind utilities;
 
@@ -58,6 +60,9 @@
     --shadow-luxury: 0 25px 50px -12px hsl(0 0% 0% / 0.5);
     --shadow-glow: 0 0 60px hsl(43 74% 49% / 0.15);
     --shadow-glow-intense: 0 0 80px hsl(43 74% 49% / 0.25);
+
+    /* Cursor trail color */
+    --cursor-trail-color: hsl(43 74% 49%);
   }
 
   .dark {
@@ -83,6 +88,9 @@
   body {
     @apply bg-background text-foreground antialiased;
     font-family: 'Montserrat', sans-serif;
+    /* PERFORMANCE: Better font rendering */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
   
   ::selection {
@@ -175,6 +183,7 @@
     box-shadow: var(--shadow-glow-intense);
   }
 
+  /* PERFORMANCE: Reduced backdrop-filter blur on mobile */
   .glass-morphism {
     background: hsl(0 0% 6% / 0.8);
     backdrop-filter: blur(12px);
@@ -221,19 +230,25 @@
   }
   
   .animate-fade-in {
-    animation: fadeIn 0.8s ease-out forwards;
+    animation: fadeIn 0.6s ease-out forwards;
   }
   
   .animate-slide-up {
-    animation: slideUp 0.8s ease-out forwards;
+    animation: slideUp 0.6s ease-out forwards;
   }
   
   .animate-slide-right {
-    animation: slideRight 0.8s ease-out forwards;
+    animation: slideRight 0.6s ease-out forwards;
   }
 
+  /* PERFORMANCE: Changed from infinite to hover-only via class */
   .animate-glow-pulse {
-    animation: glowPulse 3s ease-in-out infinite;
+    box-shadow: 0 0 20px hsl(43 74% 49% / 0.2);
+    transition: box-shadow 0.3s ease;
+  }
+
+  .animate-glow-pulse:hover {
+    box-shadow: 0 0 40px hsl(43 74% 49% / 0.4);
   }
   
   @keyframes fadeIn {
@@ -242,17 +257,107 @@
   }
   
   @keyframes slideUp {
-    from { opacity: 0; transform: translateY(30px); }
+    from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
   }
   
   @keyframes slideRight {
-    from { opacity: 0; transform: translateX(-30px); }
+    from { opacity: 0; transform: translateX(-20px); }
     to { opacity: 1; transform: translateX(0); }
   }
+}
 
-  @keyframes glowPulse {
-    0%, 100% { box-shadow: 0 0 20px hsl(43 74% 49% / 0.2); }
-    50% { box-shadow: 0 0 40px hsl(43 74% 49% / 0.4); }
+/* ============================================
+   PERFORMANCE ANIMATIONS
+   ============================================ */
+
+/* Floating particles for HeroSection - CSS instead of Framer Motion */
+@keyframes float-particle-hero {
+  0%, 100% {
+    transform: translateY(0);
+    opacity: 0.2;
+  }
+  50% {
+    transform: translateY(-30px);
+    opacity: 0.6;
+  }
+}
+
+.animate-float-particle {
+  animation: float-particle-hero 4s ease-in-out infinite;
+}
+
+/* Scroll dot bounce - CSS instead of Framer Motion */
+@keyframes scroll-dot {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(7px);
+  }
+}
+
+.animate-scroll-dot {
+  animation: scroll-dot 1.8s ease-in-out infinite;
+}
+
+/* Slow pulse for "Scroll" text */
+.animate-pulse-slow {
+  animation: pulse-slow 2.5s ease-in-out infinite;
+}
+
+@keyframes pulse-slow {
+  0%, 100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+/* TypeWriter cursor blink - CSS instead of JS setInterval */
+@keyframes cursor-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.animate-cursor-blink {
+  animation: cursor-blink 1.06s step-end infinite;
+}
+
+/* ============================================
+   REDUCED MOTION: Disable all animations
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .animate-float-particle,
+  .animate-scroll-dot,
+  .animate-pulse-slow,
+  .animate-cursor-blink {
+    animation: none !important;
+  }
+}
+
+/* ============================================
+   MOBILE OPTIMIZATIONS
+   ============================================ */
+@media (max-width: 768px) {
+  /* Hide floating particles on mobile */
+  .animate-float-particle {
+    display: none;
+  }
+
+  /* Reduce backdrop blur on mobile (very expensive) */
+  .glass-morphism {
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
   }
 }
