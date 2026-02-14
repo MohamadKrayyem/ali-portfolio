@@ -7,7 +7,7 @@ const PageLoader = memo(() => {
   useEffect(() => {
     // PERFORMANCE: Reduced from 2000ms to 1200ms
     // This directly improves LCP by ~800ms
-    const timer = setTimeout(() => setIsLoading(false), 1700);
+    const timer = setTimeout(() => setIsLoading(false), 1900);
     return () => clearTimeout(timer);
   }, []);
 
