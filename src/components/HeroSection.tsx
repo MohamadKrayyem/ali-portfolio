@@ -191,7 +191,7 @@ const HeroSection = memo(() => {
             <div className="text-[12px] sm:text-xs md:text-sm tracking-[0.3em] sm:tracking-[0.45em] uppercase font-cinzel text-primary whitespace-nowrap">
               <LetterByLetter
                 text="AI Content Creator"
-                delay={1900}
+                delay={2200}
                 speed={50}
               />
             </div>
